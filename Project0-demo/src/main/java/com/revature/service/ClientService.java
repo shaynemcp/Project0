@@ -23,7 +23,7 @@ public class ClientService {
 
     // This constructor is used to allow us to "inject" a mock dao when we
     // are testing this class
-    public ClientService (ClientDao mockDao) {
+    public ClientService(ClientDao mockDao) {
         this.clientDao = mockDao;
     }
 
@@ -75,7 +75,7 @@ public class ClientService {
             Client editedClient = clientDao.updateClients(c);
 
             return editedClient;
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             throw new IllegalArgumentException("The value provided for the client must be a valid integer");
         }
     }
@@ -91,5 +91,20 @@ public class ClientService {
         if (!c.getLastName().matches("[a-zA-Z]+")) {
             throw new IllegalArgumentException("Last name must only have alphabetical characters. Last name input was " + c.getLastName());
         }
+    }
+
+    public boolean deleteClientById(String id) throws SQLException, ClientNotFoundException {
+        try {
+            int clientId = Integer.parseInt(id);
+            Client c = clientDao.getClientById(clientId);
+            if (c == null) {
+                throw new ClientNotFoundException("Client not found. We could not delete client " + id);
+            }
+            boolean deleteClient = clientDao.deleteClientById(clientId);
+            return true;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Client not found");
+        }
+
     }
 }

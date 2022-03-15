@@ -57,7 +57,6 @@ public class ClientDao {
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
                  id = rs.getInt("clientId");
-                int accountId = rs.getInt("accountId");
 
                 return new Client(id, firstName, lastName); //Change to clientId, firstName, lastName, accountId
             }

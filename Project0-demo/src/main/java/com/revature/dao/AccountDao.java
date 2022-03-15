@@ -16,9 +16,9 @@ public class AccountDao {
     //SO, retrieve an id and return that with the Account object
 
 
-    public Account addAccount(Account account) throws SQLException {
+    public static Account addAccount(Account account) throws SQLException {
         try (Connection  con  = ConnectionUtility.getConnection()) {
-            String sql = "INSER INTO account (first_name, last_name, account_type, balance, client_id) VALUES = ?";
+            String sql = "INSERT INTO account (first_name, last_name, account_type, balance, client_id) VALUES = ?";
 
             PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
@@ -55,11 +55,11 @@ public class AccountDao {
             //TODO 13: Iterate over records(s) using the ResultSet's next() method
             if (rs.next()) {
                 //TODO 14: Grab the info from the record
-                //  int accountID = rs.getInt("id");
+                //  int accountId = rs.getInt("id");
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
                 id = rs.getInt("accountId");
-                int accountId = rs.getInt("accountId");
+               // int accountId = rs.getInt("accountId");
 
                 return new Account(id, firstName, lastName);
             }
@@ -79,11 +79,11 @@ public class AccountDao {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                int accountID = rs.getInt("id");
+                int accountId = rs.getInt("id");
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
 
-                accounts.add(new Account(accountID, firstName, lastName));
+                accounts.add(new Account(accountId, firstName, lastName));
             }
         }
         return accounts;

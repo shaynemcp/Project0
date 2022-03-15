@@ -1,8 +1,10 @@
 package com.revature.service;
 
 import com.revature.dao.AccountDao;
+import com.revature.dao.ClientDao;
 import com.revature.exception.ClientNotFoundException;
 import com.revature.model.Account;
+import com.revature.model.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,39 +34,42 @@ public class AccountService<addedAccount> {
         return this.accountDao.getAllAccounts();
     }
 
-    public Account getAccountById(String id) throws SQLException, ClientNotFoundException {
+    public List<Account> getAllAccounts(String id, String floor, String ceiling) throws SQLException {
+        return this.accountDao.getAllAccounts();
+    }
+
+    public Account getAccountById(String clientId, String accountId) throws SQLException, ClientNotFoundException {
         try {
-            int accountId = Integer.parseInt(id); // This could throw an unchecked exception
+            clientId = String.valueOf(Integer.parseInt(clientId));
+            accountId = String.valueOf(Integer.parseInt(clientId)); // This could throw an unchecked exception
             // known as NumberFormatException
             // Important to take note of this, because any unhandled exceptions will result
             // in a 500 Internal Server Error (which we should try to avoid)
+            Client c = ClientDao.getClientById(Integer.parseInt(clientId));
 
-            Account a = AccountDao.getAccountById(accountId); // this could return null
-
-            if (a == null) {
-                throw new AccountNotFoundException("Account with id " + accountId + " was not found");
+            if (c == null) {
+                throw new AccountNotFoundException("Client with id " + clientId + " was not found");
             }
+            Account a = AccountDao.getAccountById(Integer.parseInt(accountId)); // this could return null
 
             return a;
 
         } catch (AccountNotFoundException e) {
-            throw new IllegalArgumentException("The value provided for the client must be a valid integer");
+            throw new IllegalArgumentException("The value provided for the client account must be a valid integer");
         }
     }
 
-    // Business logic goes inside of this method
-    public Account addAccount(Account a) throws SQLException {
+
+    public Account addAccount(String id, Account a) throws SQLException {
 
     validateAccountInformation(a);
     // choose the type of account here
-    Account accountType;
+    //Account accountType;
 
-    Account addedAccount = Account.addAccount(a);
+    Account addedAccount = AccountDao.addAccount(a);
         return addedAccount;
     }
 
-    public Account accountType() {
-    }
 
     // If we are editing a client, we must check if the client exists or not
     public Account editAccount(String id, Account a) throws SQLException, AccountNotFoundException {
@@ -111,8 +116,10 @@ public class AccountService<addedAccount> {
             throw new IllegalArgumentException("Last name must only have alphabetical characters. Last name input was " + a.getLastName());
         }
 
-        if (a.getAccountID() == 0) {
+        if (a.getaccountId() == null) {
             throw new IllegalArgumentException("Account Id must be a valid integer. Account Id provided was: " + id);
         }
     }
+
+
 }

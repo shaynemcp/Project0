@@ -1,36 +1,37 @@
 package com.revature.model;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class Account extends Client{
-    private int accountID; // used as account's specific id, clients can have multiple accounts
+    private String accountId; // used as account's specific id, clients can have multiple accounts
     private String firstName;
     private String lastName;
 
-    private String[] accountType = {"checking", "savings", "credit", "retirement"};
+    private String[] accountType = {"wages", "savings", "endorsements", "retirement"};
     private int balance;
-    private int clientID;
+    private String clientID;
 
     public Account() {
     }
 
-    public Account(int accountID, String firstName, String lastName) {
+    public Account(int accountId, String firstName, String lastName) {
 
     }
 
-    public Account(int accountID, int clientID) {
+    public Account(int accountId, int clientID) {
 
     }
 
-    public static Account addAccount(Account a) {
-        return a;
-    }
 
     // Getters and Setters
-    public int getAccountID() {
-        return accountID;
+
+    public String getaccountId() {
+        return accountId;
     }
 
-    public void setAccountID(int accountID) {
-        this.accountID = accountID;
+    public void setaccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     @Override
@@ -54,7 +55,7 @@ public class Account extends Client{
     }
 
     public String[] getAccountType() {
-        return new String[]{String.valueOf(accountType)};
+        return accountType;
     }
 
     public void setAccountType(String[] accountType) {
@@ -65,40 +66,43 @@ public class Account extends Client{
         return balance;
     }
 
-    public void setBalance(int balance) {
-        this.balance = balance;
+    public void setBalance(String balance) {
+        this.balance = Integer.parseInt(balance);
     }
 
-    public int getClientID() {
+    public String getClientID() {
         return clientID;
     }
 
-    public void setClientID(int clientID) {
+    public void setClientID(String clientID) {
         this.clientID = clientID;
     }
 
     @Override
-    public int getId() {
-        return super.getId();
-    }
-
-    @Override
-    public void setId(int id) {
-        super.setId(id);
-    }
-
-    @Override
     public boolean equals(Object o) {
-        return super.equals(o);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Account account = (Account) o;
+        return Objects.equals(accountId, account.accountId) && Objects.equals(firstName, account.firstName) && Objects.equals(lastName, account.lastName) && Arrays.equals(accountType, account.accountType) && Objects.equals(balance, account.balance) && Objects.equals(clientID, account.clientID);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        int result = Objects.hash(super.hashCode(), accountId, firstName, lastName, balance, clientID);
+        result = 31 * result + Arrays.hashCode(accountType);
+        return result;
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Account{" +
+                "accountId='" + accountId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", accountType=" + Arrays.toString(accountType) +
+                ", balance='" + balance + '\'' +
+                ", clientID='" + clientID + '\'' +
+                '}';
     }
 }
