@@ -4,35 +4,32 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class Account extends Client{
-    private String accountId; // used as account's specific id, clients can have multiple accounts
     private String firstName;
     private String lastName;
-
-    private String[] accountType = {"wages", "savings", "endorsements", "retirement"};
+    private int accountId;
+//    private String[] accountType = {"wages", "savings", "endorsements", "retirement"};
     private int balance;
-    private String clientID;
+    private int clientID;
 
     public Account() {
     }
 
-    public Account(int accountId, String firstName, String lastName) {
-
+    public Account(int accountId, String firstName, String lastName, int balance, int clientID) {
+        this.accountId = accountId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.balance = balance;
+        this.clientID = clientID;
     }
 
-    public Account(int accountId, int clientID) {
-
-    }
+//    public Account(int accountId, int clientID) {
+//        this.accountId = accountId;
+//        this.clientID = clientID;
+//    }
 
 
     // Getters and Setters
 
-    public String getaccountId() {
-        return accountId;
-    }
-
-    public void setaccountId(String accountId) {
-        this.accountId = accountId;
-    }
 
     @Override
     public String getFirstName() {
@@ -54,27 +51,27 @@ public class Account extends Client{
         this.lastName = lastName;
     }
 
-    public String[] getAccountType() {
-        return accountType;
+    public int getAccountId() {
+        return accountId;
     }
 
-    public void setAccountType(String[] accountType) {
-        this.accountType = accountType;
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
     }
 
     public int getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
-        this.balance = Integer.parseInt(balance);
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 
-    public String getClientID() {
+    public int getClientID() {
         return clientID;
     }
 
-    public void setClientID(String clientID) {
+    public void setClientID(int clientID) {
         this.clientID = clientID;
     }
 
@@ -84,25 +81,23 @@ public class Account extends Client{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Account account = (Account) o;
-        return Objects.equals(accountId, account.accountId) && Objects.equals(firstName, account.firstName) && Objects.equals(lastName, account.lastName) && Arrays.equals(accountType, account.accountType) && Objects.equals(balance, account.balance) && Objects.equals(clientID, account.clientID);
+        return accountId == account.accountId && balance == account.balance && clientID == account.clientID && Objects.equals(firstName, account.firstName) && Objects.equals(lastName, account.lastName);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(super.hashCode(), accountId, firstName, lastName, balance, clientID);
-        result = 31 * result + Arrays.hashCode(accountType);
-        return result;
+        return Objects.hash(super.hashCode(), firstName, lastName, accountId, balance, clientID);
     }
 
     @Override
-    public String toString() {
+    public String
+    toString() {
         return "Account{" +
-                "accountId='" + accountId + '\'' +
-                ", firstName='" + firstName + '\'' +
+                "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", accountType=" + Arrays.toString(accountType) +
-                ", balance='" + balance + '\'' +
-                ", clientID='" + clientID + '\'' +
+                ", accountId=" + accountId +
+                ", balance=" + balance +
+                ", clientID=" + clientID +
                 '}';
     }
 }

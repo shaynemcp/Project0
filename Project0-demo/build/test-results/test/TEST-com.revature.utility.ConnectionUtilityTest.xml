@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.revature.utility.ConnectionUtilityTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-03-18T03:17:12" hostname="DESKTOP-BC91QOT" time="1.292">
+  <properties/>
+  <testcase name="test_getConnection()" classname="com.revature.utility.ConnectionUtilityTest" time="1.292"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

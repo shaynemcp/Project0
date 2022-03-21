@@ -14,13 +14,14 @@ public class Client {
     public Client() {
     }
 
-    public Client(int id, String lastName) {
-    }
-
     public Client(int id, String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.id = id;
+
     }
 
-// Getters & Setters
+    // Getters & Setters
     public int getId() {
         return id;
     }
@@ -53,14 +54,15 @@ public class Client {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName,lastName);
-        }
+        return Objects.hash(id, firstName, lastName);
+    }
 
     @Override
     public String toString() {
-        return  "Client{" +
+        return "Client{" +
                 "id=" + id +
-                ", firstName='" + firstName + " \'" +
-                ", lastName='" + lastName + " }'"; }
-
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 }

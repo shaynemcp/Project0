@@ -18,13 +18,13 @@ public class ClientDao {
 
     public static Client addClient(Client client) throws SQLException {
         try (Connection  con  = ConnectionUtility.getConnection()) {
-            String sql = "INSER INTO client (first_name, last_name) VALUES = ?";
+            String sql = "INSERT INTO clients (first_name, last_name) VALUES (?,?)";
 
             PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             pstmt.setString(1, client.getFirstName());
             pstmt.setString(2, client.getLastName());
-            pstmt.setInt(3, client.getId());
+//            pstmt.setInt(3, client.getId());
 
             pstmt.executeUpdate();
 
@@ -41,10 +41,10 @@ public class ClientDao {
         //TODO 9: Call the getConnection method from ConnectionUtility (Which we made)
         try (Connection con = ConnectionUtility.getConnection()) {
             //TODO 10: Create a prepared statement object using the connection object
-            String sql = "SELECT * FROM client WHERE id = ?"  ;
+            String sql = "SELECT * FROM clients WHERE id = ?"  ;
             PreparedStatement pstmt = con.prepareStatement(sql);
 
-            //TODO 11: If any parameter need to eb set, set the parameters (?)
+            //TODO 11: If any parameter need to be set, set the parameters (?)
             pstmt.setInt(1,id);
 
             //TODO12: Execute the query and retrieve a ResultSet object
@@ -54,9 +54,8 @@ public class ClientDao {
             if (rs.next()) {
                 //TODO 14: Grab the info from the record
                 //  int clientID = rs.getInt("id");
-                String firstName = rs.getString("firstName");
-                String lastName = rs.getString("lastName");
-                 id = rs.getInt("clientId");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
 
                 return new Client(id, firstName, lastName); //Change to clientId, firstName, lastName, accountId
             }
@@ -69,7 +68,7 @@ public class ClientDao {
         List<Client> clients = new ArrayList<>();
 
         try (Connection con = ConnectionUtility.getConnection()) {
-            String sql = "SELECT * FROM client ";
+            String sql = "SELECT * FROM clients ";
             PreparedStatement pstmt = con.prepareStatement(sql);
 
 
@@ -77,8 +76,8 @@ public class ClientDao {
 
             while (rs.next()) {
                 int clientID = rs.getInt("id");
-                String firstName = rs.getString("firstName");
-                String lastName = rs.getString("lastName");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
 
                 clients.add(new Client(clientID, firstName, lastName));
             }
@@ -91,14 +90,14 @@ public class ClientDao {
         try (Connection con = ConnectionUtility.getConnection()) {
             String sql = "UPDATE clients " +
                     "SET first_name = ?, " +
-                    "last_name = ?, " +
+                    "last_name = ? " +
                     "WHERE id = ?";
 
             PreparedStatement pstmt = con.prepareStatement(sql);
 
             pstmt.setString(1, client.getFirstName());
             pstmt.setString(2, client.getLastName());
-            pstmt.setInt(4, client.getId());
+            pstmt.setInt(3, client.getId());
 
             pstmt.executeUpdate();
         }
@@ -109,7 +108,7 @@ public class ClientDao {
     //D
     public boolean deleteClientById(int id) throws SQLException{
         try (Connection con = ConnectionUtility.getConnection()) {
-            String sql = "DELETE FROM  clients  WHWERE id = ?";
+            String sql = "DELETE FROM  clients  WHERE id = ?";
 
             PreparedStatement pstmt = con.prepareStatement(sql);
 
@@ -118,6 +117,7 @@ public class ClientDao {
             int numberOfRecordsDeleted = pstmt.executeUpdate(); // executeUpdate() is used with INSERT, UPDATE, DELETE
 
             if (numberOfRecordsDeleted ==1) {
+                System.out.println("The client with id " + id + "has been deleted.");
                 return true;
             }
         }
